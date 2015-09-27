@@ -14,6 +14,7 @@ carbon:
      - "2003:2003"
     environment:
      - DC_NAME=dc1
+     - CARBON_METRICS_ENTRY=false
     dns: 127.0.0.1
     hostname: carbon
     volumes:

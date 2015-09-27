@@ -1,16 +1,24 @@
 {
   "services": [
     {
-      "id": "metricsink",
-      "name": "metricsink",
-      "tags": [
-        "carbon-relay-ng",
-        "carbon",
-      ],
+      "id": "carbon",
+      "name": "carbon",
+      "tags": [ "relay-ng", "entry" ],
       "port": 2003,
       "checks": [
         {
           "script": "nmap 127.0.0.1 -PN -p 2003 |grep open",
+          "interval": "5s"
+        }
+      ]
+    }, {
+      "id": "carbon-relay-ng",
+      "name": "carbon-relay-ng",
+      "tags": [ "webui" ],
+      "port": 8081,
+      "checks": [
+        {
+          "script": "nmap 127.0.0.1 -PN -p 8081 |grep open",
           "interval": "5s"
         }
       ]
