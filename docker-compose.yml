@@ -16,6 +16,8 @@ carbon:
     environment:
      - DC_NAME=dc1
      - CARBON_METRICS_ENTRY=false
+     - SKIP_PSWATCH=true
+     - COLLECT_METRICS=true
     dns: 127.0.0.1
     hostname: carbon
     volumes:
@@ -30,6 +32,7 @@ gapi:
     environment:
      - DC_NAME=dc1
      - SKIP_PSWATCH=true
+     - COLLECT_METRICS=true
     ports:
      - 8888:80
     links:
@@ -40,17 +43,18 @@ gapi:
     privileged: true
 
 grafana:
-  image: qnib/grafana
-  ports:
-   - "8080:80"
-  environment:
-  - DC_NAME=dc1
-  dns: 127.0.0.1
-  hostname: grafana
-  links:
-   - consul:consul
-   - gapi:gapi
-  privileged: true
+    image: qnib/grafana
+    ports:
+     - "8080:80"
+    environment:
+     - DC_NAME=dc1
+     - COLLECT_METRICS=true
+    dns: 127.0.0.1
+    hostname: grafana
+    links:
+     - consul:consul
+     - gapi:gapi
+    privileged: true
 
 metrics:
     image: qnib/carbon-relay-ng
