@@ -1,0 +1,29 @@
+instance = "default"
+
+max_procs = 2
+
+listen_addr = "0.0.0.0:2003"
+admin_addr = "0.0.0.0:2004"
+http_addr = "0.0.0.0:8081"
+spool_dir = "/var/spool/carbon-relay-ng"
+pid_file = "/var/run/carbon-relay-ng.pid"
+#one of critical error warning notice info debug
+log_level = "notice"
+# How long to keep track of invalid metrics seen
+# Useful time units are "s", "m", "h"
+bad_metrics_max_age = "24h"
+
+# put init commands here, in the same format as you'd use for the telnet interface
+# here's some examples:
+init = [
+     'addBlack prefix collectd.localhost',  # ignore hosts that don't set their hostname properly (implicit substring matrch).
+     'addBlack regex ^foo\..*\.cpu+', # ignore foo.<anything>.cpu.... (regex pattern match) 
+     'addAgg sum ^stats\.timers\.(app|proxy|static)[0-9]+\.requests\.(.*) stats.timers._sum_$1.requests.$2 10 20',
+     'addAgg avg ^stats\.timers\.(app|proxy|static)[0-9]+\.requests\.(.*) stats.timers._avg_$1.requests.$2 5 10',
+     {{range $tag, $services := service "carbon" "passing" | byTag}}{{if eq $tag "storage"}}{{range $services}}'addRoute sendAllMatch carbon-{{.Node}}  {{.Address}}:{{.Port}} spool=true pickle=false',{{end}}{{end}}{{end}}
+]
+
+[instrumentation]
+# in addition to serving internal metrics via expvar, you can optionally send em to graphite
+graphite_addr = ""  # localhost:2003 (how about feeding back into the relay itself? :)
+graphite_interval = 1000  # in ms

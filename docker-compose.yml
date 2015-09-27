@@ -10,6 +10,7 @@ consul:
 
 carbon:
     image: qnib/carbon
+    privileged: true
     ports:
      - "2003:2003"
     environment:
@@ -53,6 +54,7 @@ grafana:
 
 metrics:
     image: qnib/carbon-relay-ng
+    privileged: true
     hostname: carbon-relay-ng
     dns: 127.0.0.1
     ports:

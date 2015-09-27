@@ -12,7 +12,6 @@ RUN dnf install -y golang git-core mercurial make && \
     dnf remove -y make golang git-core mercurial && \
     dnf autoremove -y
 ADD etc/carbon-relay-ng /etc/carbon-relay-ng
-ADD etc/supervisord.d/carbon-relay-ng.ini /etc/supervisord.d/
+ADD etc/consul-templates/carbon-relay-ng.ini.ctmpl /etc/consul-templates/
+ADD etc/supervisord.d/*.ini /etc/supervisord.d/
 ADD etc/consul.d/carbon-relay-ng.json /etc/consul.d/
-   
-
