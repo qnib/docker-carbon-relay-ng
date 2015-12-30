@@ -74,3 +74,5 @@ relay:
      - DC_NAME=dc1
     links:
      - consul:consul
+    volumes:
+     - "./opt/qnib/carbon-relay-ng/bin/:/opt/qnib/carbon-relay-ng/bin/"
